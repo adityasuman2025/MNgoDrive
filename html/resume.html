@@ -1,0 +1,20 @@
+<div class="content_container">
+	<h2 id="start"></h2>
+	
+	<div style="text-align: center;">
+		<a class="btn btn-primary primary_button" target="_blank" href="CampusResume.pdf">Download Campus Resume</a>
+		<a class="btn btn-primary primary_button" target="_blank" href="OffCampusResume.pdf">Download Off-Campus Resume</a>
+	
+	</div>
+
+	<h2 id="close"></h2>
+</div>
+<script type="text/javascript">
+	var text = "resume";
+
+	var start = document.createTextNode('<' + text + '>');
+	document.getElementById("start").appendChild(start);
+
+	var close = document.createTextNode('</' + text + '>');
+	document.getElementById("close").appendChild(close);
+</script>
