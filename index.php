@@ -19,7 +19,7 @@
 <html>
 <head>
 	<title>MNgo Drive</title>
-	<link href="css/style.css" rel="stylesheet"/>
+	<link href="css/index.css" rel="stylesheet"/>
 	<link rel="icon" href="img/logo.png" />
 	<script type="text/javascript" src="js/jquery.js"> </script>
 	<meta name="viewport" content="width=device-width, initial-scale= 1">
@@ -38,22 +38,66 @@
 <body>
 <!-----main body container----->
 <div class="body_container">
-<!----follow me----->
-	<div class="content_container">
-		<h2>follow me</h2>
-		<div class="content">
-			<ul>				
-				<li>facebook: <a href="https://www.facebook.com/adityasuman2025" target="_blank">https://www.facebook.com/adityasuman2025</a></li>
-				<li>quora: <a href="https://www.quora.com/profile/Aditya-Suman-15" target="_blank">https://www.quora.com/profile/Aditya-Suman-15</a></li>	
-			</ul>	
-		</div>
-	</div>
-	<br><br>
+	<center>		
+		<form class="login_form">
+			<img src="img/logo.png" id="login_logo" />
+			<h2 id="login_title">MNgo Drive</h2>
+			
+			<input type="text" id="login_username" placeholder="Username">
+			<br><br>
+
+			<input type="password" id="login_password" placeholder="Password">
+			<br>
+
+			<div id="button-5">
+			    <div id="translate"></div>
+			    <button style="background: none; border: none;" href="#">Login</button>
+			</div>
+		</form>
+		<div class="error"></div>		
+	</center>
 </div>
 	
 <!-------script-------->
 	<script type="text/javascript">
-		
+		$('#button-5').on("click", function(e)
+		{
+			e.preventDefault();
+			
+			var login_username = $('#login_username').val().trim();
+			var login_password = $('#login_password').val().trim();
+
+			if(login_username != "" && login_password != "")
+			{
+				$('.error').text("");
+				$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
+
+				$.post('php/verify_user.php', {login_username: login_username, login_password: login_password}, function(data)
+				{
+					if(data == 0)
+					{
+						$('#error1').text("Please fill all the fields");
+					}
+					else if(data == -1)
+					{
+						$('#error1').text("Invalid email or password");	
+					}				
+					else if(data == 1)
+					{
+						location.href = "results.php";
+					}
+					else
+					{
+						$('#error1').text("Unknown error");	
+					}
+				});	
+			}
+			else
+				$('.error').text("Please fill all the fields");
+					
+			console.log(login_username);
+			console.log(login_password);
+		});
 	</script>
 </body>
 </html>
