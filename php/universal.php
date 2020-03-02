@@ -1,6 +1,4 @@
-<?php
-	include_once 'encrypt.php';
-
+<?php	
 //global variables		
 	$session_time = 60*24; //in minutes //1 day
 	$project_title = "MNgo Drive";
