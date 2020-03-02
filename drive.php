@@ -6,6 +6,8 @@
 		header("location: index.php");
 		die();
 	}
+
+	$logged_user_id = $_COOKIE['MNgoDrive_logged_user_id'];
 ?>
 <html>
 <head>
@@ -30,7 +32,7 @@
 
 <body>
 <!--------navigation bar---->
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-inverse header_nav">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
 	      	<a class="navbar-brand" >
@@ -53,7 +55,12 @@
 	</nav>
 
 <!-----main body container----->
-	<div class="row drive_container">
+	<div class="row drive_container">		
+		<img class="gif_loader" src="img/loader1.gif">
+	</div>
+
+<!-------add file/folder btn area---->
+	<div class="add_btns">
 		<div class="button-5">
 		    <div class="translate"></div>
 		   	<button class="button_btn">New Folder</button>
@@ -62,10 +69,8 @@
 		    <div class="translate"></div>
 		    <button class="button_btn">Upload File</button>
 		</div>
-
-		<img class="gif_loader" src="img/loader1.gif">
 	</div>
-	
+
 <!-------script-------->
 	<script type="text/javascript">
 	//function to handle cookies  
@@ -101,6 +106,25 @@
 		session_length = "<?php echo $session_time; ?>";
 		api_address = "<?php echo $api_address; ?>";		
 
+	//getting root folder and file of that user
+		var logged_user_id = "<?php echo $logged_user_id; ?>";
+
+		var post_address = api_address + "get_user_root_file_folder.php";
+		$.post(post_address, {logged_user_id: logged_user_id}, function(data)
+		{
+			if(data == -100)
+			{
+				$('.error').text("Database connection error");
+			}
+			else if(data == -1)
+			{
+				$('.error').text("Something went wrong");
+			}
+			else
+			{
+				console.log(data);
+			}
+		});	
 	</script>
 </body>
 </html>

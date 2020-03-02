@@ -63,17 +63,16 @@ body
 	{
 	  display: inline-flex;
 	  height: 40px;
-	  width: 150px;
+	  width: 130px;
 	  border: 2px solid #BFC0C0;
-	  margin: 20px 20px 20px 20px;
+	  padding: 0px;
+	  margin: 10px;
 	  color: #BFC0C0;
 	  text-transform: uppercase;
 	  text-decoration: none;
 	  font-size: .8em;
-	  letter-spacing: 1.5px;
 	  align-items: center;
 	  justify-content: center;
-	  overflow: hidden;
 	  position: relative;
 	  overflow: hidden;
 	  cursor: pointer;
@@ -81,10 +80,12 @@ body
 
 	.button_btn {
 	  color: #BFC0C0;
-	  text-decoration: none;
-	  letter-spacing: 1px;
 	  background: none;
 	  border: none;
+	  padding: 0px;
+	  margin: 0px;
+	  font-size: 115%;
+	  font-weight: bold;
 	}
 	
 	.translate {
@@ -182,6 +183,17 @@ body
 
 	.drive_container
 	{
+		text-align: center;
+		background-color: red;
+		padding-bottom: 50px; 
+	}
+
+	.add_btns
+	{
+		position: fixed;
+		bottom: 0;
+		left:0;
+		right: 0;
 		text-align: center;
 	}
 
