@@ -59,13 +59,7 @@ body
 		margin: auto;
 	}	
 
-	#button-5 button {
-	  color: #BFC0C0;
-	  text-decoration: none;
-	  letter-spacing: 1px;
-	}
-
-	#button-5 
+	.button-5 
 	{
 	  display: inline-flex;
 	  height: 40px;
@@ -85,12 +79,16 @@ body
 	  cursor: pointer;
 	}
 
-	#button-5 a {
-	  position: relative;
-	  transition: all .45s ease-Out;
+	.button_btn {
+	  color: #BFC0C0;
+	  text-decoration: none;
+	  letter-spacing: 1px;
+	  background: none;
+	  border: none;
 	}
-
-	#translate {
+	
+	.translate {
+		z-index: -10;
 	  transform: rotate(50deg);
 	  width: 100%;
 	  height: 250%;
@@ -101,13 +99,13 @@ body
 	  transition: all .3s ease-Out;
 	}
 
-	#button-5:hover #translate {
+	.button-5:hover .translate {
 	  left: 0;
 	}
 
-	#button-5:hover a {
+	.button-5:hover .button_btn {
 	  color: #2D3142;
-	}
+	 }
 
 	.success 
 	{
@@ -133,7 +131,12 @@ body
 	}
 
 /*----drive page--------*/
-		
+	.row
+	{
+		margin: 0;
+		padding: 0;
+	}
+
 	.navbar
 	{
 		border-radius: 0px;
@@ -153,7 +156,7 @@ body
 		padding: 0px;
 		margin: 0px;
 	}
-		
+
 	.header_bar_title
 	{
 		padding: 0px;
@@ -175,6 +178,11 @@ body
 		font-size: 120%;
 		color: white;
 		cursor: pointer;
+	}
+
+	.drive_container
+	{
+		text-align: center;
 	}
 
 /*--------media query--------*/

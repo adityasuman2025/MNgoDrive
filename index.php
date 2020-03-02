@@ -40,9 +40,9 @@
 			<input type="password" id="login_password" placeholder="Password">
 			<br>
 
-			<div id="button-5">
-			    <div id="translate"></div>
-			    <button style="background: none; border: none;" href="#">Login</button>
+			<div class="button-5">
+			    <div class="translate"></div>
+			    <button class="button_btn">Login</button>
 			</div>
 		</form>
 		<div class="error"></div>		
@@ -84,7 +84,7 @@
 		session_length = "<?php echo $session_time; ?>";
 		api_address = "<?php echo $api_address; ?>";		
 
-		$('#button-5').on("click", function(e)
+		$('.button-5').on("click", function(e)
 		{
 			e.preventDefault();
 			
@@ -115,7 +115,7 @@
 					}					
 					else
 					{
-						setCookie('MNgoDrive_logged_username', data, session_length);
+						setCookie('MNgoDrive_logged_user_id', data, session_length);
 						location.href = "drive.php";
 					}
 				});	

@@ -15,7 +15,7 @@
 	}	
 
 	$isSomeOneLogged = false;
-	if(isset($_COOKIE['MNgoDrive_logged_username']))
+	if(isset($_COOKIE['MNgoDrive_logged_user_id']))
 	{
 		$isSomeOneLogged = true;
 	}

@@ -53,8 +53,17 @@
 	</nav>
 
 <!-----main body container----->
-	<div class="body_container">
-		
+	<div class="row drive_container">
+		<div class="button-5">
+		    <div class="translate"></div>
+		   	<button class="button_btn">New Folder</button>
+		</div>
+		<div class="button-5">
+		    <div class="translate"></div>
+		    <button class="button_btn">Upload File</button>
+		</div>
+
+		<img class="gif_loader" src="img/loader1.gif">
 	</div>
 	
 <!-------script-------->
