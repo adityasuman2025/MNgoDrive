@@ -1,24 +1,15 @@
-<!-------counter & ip tracking-------->
 <?php
-	$ip = $_SERVER["REMOTE_ADDR"];
-	date_default_timezone_set('Asia/Kolkata');
-	$time = date ("H:i:s", time());
-	$date = date ("d M Y", time());
+	include_once("php/universal.php");
 
-	$handleip =fopen('ip.txt', 'a');
-	$handlecnt= fopen('count.txt', 'r');
-	$currentcnt= fread($handlecnt, 1342177);
-	fwrite($handleip, "$currentcnt :---> \t \t $ip  \t \t Time :--> \t $time \t \t Date:--> \t $date \n");
-
-	$newcnt= $currentcnt + 1;
-	$handlecnt= fopen('count.txt', 'w');
-	fwrite($handlecnt, $newcnt);	
+	if($isSomeOneLogged) //redirecting to the drive page
+	{
+		header("drive.php");
+		die();
+	}
 ?>
-
-<!-------counter & ip tracking-------->
 <html>
 <head>
-	<title>MNgo Drive</title>
+	<title><?php echo $project_title; ?></title>
 	<link href="css/index.css" rel="stylesheet"/>
 	<link rel="icon" href="img/logo.png" />
 	<script type="text/javascript" src="js/jquery.js"> </script>
@@ -41,7 +32,7 @@
 	<center>		
 		<form class="login_form">
 			<img src="img/logo.png" id="login_logo" />
-			<h2 id="login_title">MNgo Drive</h2>
+			<h2 id="login_title"><?php echo $project_title; ?></h2>
 			
 			<input type="text" id="login_username" placeholder="Username">
 			<br><br>
@@ -60,6 +51,11 @@
 	
 <!-------script-------->
 	<script type="text/javascript">
+		session_length = "<?php echo $session_time; ?>";
+		api_address = "<?php echo $api_address; ?>";
+
+		// console.log(api_address);
+
 		$('#button-5').on("click", function(e)
 		{
 			e.preventDefault();
@@ -72,7 +68,8 @@
 				$('.error').text("");
 				$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
 
-				$.post('php/verify_user.php', {login_username: login_username, login_password: login_password}, function(data)
+				var post_address = api_address . "verify_user";
+				$.post(post_address, {login_username: login_username, login_password: login_password}, function(data)
 				{
 					if(data == 0)
 					{
@@ -80,7 +77,7 @@
 					}
 					else if(data == -1)
 					{
-						$('#error1').text("Invalid email or password");	
+						$('#error1').text("Invalid email or password");
 					}				
 					else if(data == 1)
 					{
@@ -94,9 +91,6 @@
 			}
 			else
 				$('.error').text("Please fill all the fields");
-					
-			console.log(login_username);
-			console.log(login_password);
 		});
 	</script>
 </body>
