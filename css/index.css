@@ -132,266 +132,55 @@ body
 	  }
 	}
 
-/*----title bar--------*/
-	.title_bar
-	{
-		z-index: 1000;
-		width: 100%;
-		position: fixed;
-		/*height: 25px;*/
-		background-color: #e5e5e5;
-		background-image: linear-gradient(to bottom, #e5e5e5 0%, #d5d5d5 74%);
-	}
-
-	.title_bar_buttons
-	{
-		padding: 0px;
-		margin: 0px;
-		padding-left: 10px;
-		vertical-align: middle;
-		height: 100%;
-
-		display: flex; 	
-	  	align-items: center; 
-	}
-
-	.title_bar_buttons div
-	{
-		display: inline-block;
-		height: 14px;
-		width: 14px;
-		border-radius: 14px;
-
-		vertical-align: middle;
-		margin-right: 7px;
-	}
-
-	#title_bar_close_btn
-	{
-		background: #fe6254;	
-	}
-
-	#title_bar_mini_btn
-	{
-		background: #fdc92d;
-	}
-
-	#title_bar_maxi_btn
-	{
-		background: #28d33f;
-	}
-
-	.title_bar_title
-	{
-		color: #5b5b5b;
-		text-align: center;
-		height: 100%;
-		line-height: 25px;
-
-		display: flex; 	
-	  	align-items: center; 
-	  	justify-content: center;
-	}
-
-/*----navigation bar and file window container--------*/	
-	.navigation_menu_bar
-	{
-		padding: 0px;
-		margin: 0px;
-		background: #181915;
-		overflow-y: scroll;
-		border-right: 1px #21221d solid;
-	}
-
-	.navigation_menu_bar::-webkit-scrollbar {
-	  display: none;
-	}
-
-	.file_container
-	{
-		padding: 0px;
-		margin: 0px;
-		background: #282923;
-		overflow-y: scroll;
-	}
-
-	.open_files_menu_bar
-	{
-		padding: 0px;
-		margin: 0px;
-		background: #181915;
-		height: 100%;
-		width: 100%;
-		overflow-y: scroll;
-		list-style: none;
-	}
-
-	.open_files_menu_bar::-webkit-scrollbar {
-	  display: none;
-	}
-
-	#open_files_menu_card_sample
-	{
-		display: none;
-	}
-
-	.open_files_menu_card
-	{		
-		padding: 0px;
-		margin: 0px;
-		margin-left: 5px;
-		padding-left: 10px;
-		padding-right: 10px;		
+/*----drive page--------*/
 		
-		display: inline-block; 	
-	  	font-size: 90%;
-		height: 90%;
-		width: 150px;
+	.navbar
+	{
+		border-radius: 0px;
+		background-color: #1c313a;
+		border: none;
+	}
+
+	.navbar-brand
+	{
+		padding: 0px;
+		margin: 0px;
+		text-align: left;
+	}
+
+	.navbar-brand .row
+	{
+		padding: 0px;
+		margin: 0px;
+	}
 		
-		background: #21221d;
-		color: #80807f;	
-		border-radius: 10px 10px 0px 0px;
-		cursor: default;
+	.header_bar_title
+	{
+		padding: 0px;
+		margin: 0px;
+		vertical-align: middle;		
+		padding-left: 10px;
+		padding-right: 10px;
+		color: #f1f1f1;
 	}
 
-	.open_files_menu_card div
+	.header_bar_title img
 	{
-		display: inline-block;
+		padding: 4px;
+		height: 100%;
 	}
 
-	.open_files_menu_card span
+	.log_btn, .log_btn:hover
 	{
-		float: right;
+		font-size: 120%;
+		color: white;
 		cursor: pointer;
 	}
-
-	#FOLDERS_Name
-	{
-		letter-spacing: 1px;
-		color: #9a9a98;
-		font-weight: 1000;
-		padding: 10px;
-	}
-
-	.nav_bar_options, .nav_bar_options ul
-	{
-
-		list-style: none;		
-		color: #c8c9c7;
-		padding-left: 10px;
-	}
-
-	.nav_bar_options ul
-	{
-		display: none;
-	}
-
-	.nav_bar_options li
-	{
-		padding: 3px;
-		cursor: pointer;
-	}
-
-	.nav_bar_folder_icon
-	{
-		width: 20px;
-		vertical-align: bottom;
-	}
-
-	.file_opener
-	{
-		color: #c8c9c7;
-	}
-
-/*------for content of the pages-------*/
-	.content_container
-	{
-		font-family: mech;
-		margin-left: 18px;
-		margin-top: 18px;
-	}
-
-	.content_container h2
-	{
-		font-size: 150%;
-		padding: 0;
-		margin: 0;
-		margin-bottom: 5px;
-		color: #f3246f;
-	}
-
-	.content
-	{
-		margin-left: 20px;
-		line-height: 20px;
-	}
-
-	.content_container ul
-	{
-		margin:0;
-		padding: 0;
-		margin-left: 20px;
-		line-height: 20px;
-
-		word-wrap: break-word;
-	}
-
-	.content_container li
-	{
-		margin:0;
-		padding: 0;
-		margin: 5px;
-		margin-left: 10px;
-		word-wrap: break-word;
-	}
-
-	.content_container a
-	{
-		color: #5cbbce;
-		text-decoration: none;
-	}
-
-	.content_container b
-	{
-		font-weight: normal;
-		color: #9ed72b;
-	}
-
-	.float_right
-	{
-		float: right;
-	}
-
-	.primary_button
-	{
-		background: none;
-	}
-
 
 /*--------media query--------*/
 	@media screen and (max-width: 800px)
 	{
-		.file_name_address
-		{
-			display: none;
-		}
-
-		.splash_container
-		{	
-			position:absolute; /*it can be fixed too*/
-	        left:0; right:0;
-	        top:0; bottom:0;
-	        margin:auto;
-
-			width: 300px;
-			height: 200px;
-		}
-
-		.title_n_logo
-		{
-			padding: 20px;
-		}
-
+		
 		.loading_gif
 		{
 			margin: auto;
