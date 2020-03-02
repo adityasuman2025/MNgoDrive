@@ -71,8 +71,16 @@
 		</div>
 	</div>
 
+<ul class='custom-menu'>
+  <li data-action = "first">First thing</li>
+  <li data-action = "second">Second thing</li>
+  <li data-action = "third">Third thing</li>
+</ul>
+
 <!-------script-------->
 	<script type="text/javascript">
+		document.addEventListener('contextmenu', event => event.preventDefault());
+
 	//function to handle cookies  
 	    function setCookie(name,value,mins) 
 	    {
@@ -102,11 +110,19 @@
 	        document.cookie = name + '=; expires=' + now.toGMTString() + ";path=/";
 	    }
 
-	//on clicking on go btn	    
+	//on clicking on logout btn
+		$('#logout_btn').on('click', function()
+		{
+			$.post('php/logout.php', {}, function(data)
+			{
+				location.href = "index.php";
+			});
+		});
+
+	//getting root folder and file of that user
 		session_length = "<?php echo $session_time; ?>";
 		api_address = "<?php echo $api_address; ?>";		
 
-	//getting root folder and file of that user
 		var logged_user_id = "<?php echo $logged_user_id; ?>";
 
 		var post_address = api_address + "get_user_root_file_folder.php";
@@ -122,7 +138,80 @@
 			}
 			else
 			{
-				console.log(data);
+				var html = "";
+
+				var resultArray = $.parseJSON(data);				
+				for(var index in resultArray) 
+				{
+					var tempHTML = "";
+
+					var name = (resultArray[index]['name']).substring(0, 18);
+					var type = resultArray[index]['type'];
+					
+					if(type == "folder")
+					{
+						var icon_name = "folder";
+
+						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container"><img src="img/' + icon_name + '.png" /><div class="name_text">' + name + '</div></div>';
+					}
+					else if(type == "file")
+					{
+						var icon_name = "file";
+
+						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container"><img src="img/' + icon_name + '.png" /><div class="name_text">' + name + '</div></div>';
+					}
+
+					html += tempHTML;
+				   	// console.log(index, resultArray[index]);
+				}
+
+				$('.drive_container').html(html);
+
+				// Trigger action when the contexmenu is about to be shown
+		$('.file_folder_container').bind("contextmenu", function (event) {
+		    
+		    // Avoid the real one
+		    event.preventDefault();
+		    
+		    // Show contextmenu
+		    $(".custom-menu").finish().toggle(100).
+		    
+		    // In the right position (the mouse)
+		    css({
+		        top: event.pageY + "px",
+		        left: event.pageX + "px"
+		    });
+		});
+
+
+		// If the document is clicked somewhere
+		$(document).bind("mousedown", function (e) {
+		    
+		    // If the clicked element is not the menu
+		    if (!$(e.target).parents(".custom-menu").length > 0) {
+		        
+		        // Hide it
+		        $(".custom-menu").hide(100);
+		    }
+		});
+
+
+		// If the menu element is clicked
+		$(".custom-menu li").click(function(){
+		    
+		    // This is the triggered action name
+		    switch($(this).attr("data-action")) {
+		        
+		        // A case for each action. Your actions here
+		        case "first": alert("first"); break;
+		        case "second": alert("second"); break;
+		        case "third": alert("third"); break;
+		    }
+		  
+		    // Hide it AFTER the action was triggered
+		    $(".custom-menu").hide(100);
+		  });
+
 			}
 		});	
 	</script>

@@ -181,13 +181,6 @@ body
 		cursor: pointer;
 	}
 
-	.drive_container
-	{
-		text-align: center;
-		background-color: red;
-		padding-bottom: 50px; 
-	}
-
 	.add_btns
 	{
 		position: fixed;
@@ -197,13 +190,77 @@ body
 		text-align: center;
 	}
 
+	.drive_container
+	{
+		text-align: center;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+		/*background-color: red;*/
+		padding-bottom: 60px; 
+	}
+
+	.file_folder_container
+	{
+		/*display: inline-block;*/
+		cursor: pointer;
+		margin: 10px;
+		box-shadow: 0px 0px 2px grey;
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.file_folder_container img
+	{
+		padding: 10px;
+		height: 60px;
+		/*width: 100%;*/
+	}
+
+	.name_text
+	{
+		color: #BFC0C0;
+		font-size: 115%;
+
+	}
+
+	.custom-menu 
+	{
+	    display: none;
+	    z-index: 1000;
+	    position: absolute;
+	    overflow: hidden;
+	    border: 1px solid #CCC;
+	    white-space: nowrap;
+	    font-family: sans-serif;
+	    background: #FFF;
+	    color: #333;
+	    border-radius: 5px;
+	    list-style: none;
+	    padding: 0px;
+	    margin: 0px;
+	}
+
+	.custom-menu li {
+	    padding: 8px 12px;
+	    cursor: pointer;
+	}
+
+	.custom-menu li:hover {
+	    background-color: #DEF;
+	}
+
 /*--------media query--------*/
 	@media screen and (max-width: 800px)
-	{
-		
+	{		
 		.loading_gif
 		{
 			margin: auto;
 			width: 35px;
+		}
+
+		.file_folder_container
+		{
+			margin: 0px;
 		}
 	}

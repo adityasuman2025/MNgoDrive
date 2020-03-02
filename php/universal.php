@@ -11,7 +11,7 @@
 	}
 	else
 	{
-		$api_address = ""; //change this address when deplying somewhere else
+		$api_address = "http://" . $website . "/MNgo/drive_api/"; //change this address when deplying somewhere else
 	}	
 
 	$isSomeOneLogged = false;
