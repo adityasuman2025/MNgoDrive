@@ -17,8 +17,9 @@
 	<link href="css/index.css" rel="stylesheet"/>
 	<link rel="icon" href="img/logo.png" />
 	<script type="text/javascript" src="js/jquery.js"> </script>
+	<script type="text/javascript" src="js/jquery.redirect.js"></script>
+	
 	<meta name="viewport" content="width=device-width, initial-scale= 1">
-
 	<meta charset="utf-8">
 	<meta name="description" content="MNgo | Works in Software Development, Android App Development, Web Development, Graphics Designing | Founder: Aditya Suman">
 	<meta name="google-site-verification" content="tmpTIfxUJCSXkF8NKNgLWkRBtFpKisiSJOipCBQT8DA" />
@@ -151,14 +152,17 @@
 					if(type == "folder")
 					{
 						var icon_name = "folder";
+						var folder_id = resultArray[index]['folder_id'];
 
-						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container"><img src="img/' + icon_name + '.png" /><div class="name_text">' + name + '</div></div>';
+						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" folder_id="' + folder_id + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + name + '</div></div>';
 					}
 					else if(type == "file")
 					{
+						var file_address = resultArray[index]['file_address'];
+
 						var icon_name = "file";
 
-						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container"><img src="img/' + icon_name + '.png" /><div class="name_text">' + name + '</div></div>';
+						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" file_address="' + file_address + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + name + '</div></div>';
 					}
 
 					html += tempHTML;
@@ -167,50 +171,69 @@
 
 				$('.drive_container').html(html);
 
-				// Trigger action when the contexmenu is about to be shown
-		$('.file_folder_container').bind("contextmenu", function (event) {
-		    
-		    // Avoid the real one
-		    event.preventDefault();
-		    
-		    // Show contextmenu
-		    $(".custom-menu").finish().toggle(100).
-		    
-		    // In the right position (the mouse)
-		    css({
-		        top: event.pageY + "px",
-		        left: event.pageX + "px"
-		    });
-		});
+			//on clicking on file/folder
+				$('.file_folder_container').on("click", function()
+				{
+					var type = $(this).attr("type");
+					if(type == "file") //opening the file new tab
+					{
+						var file_address = $(this).attr("file_address");
 
+						$.redirect(file_address,
+				        {
+				        }, "POST", "_blank");
+					}
+					else //displaying the content of the folder
+					{						
+						$.redirect("folder.php",
+				        {
 
-		// If the document is clicked somewhere
-		$(document).bind("mousedown", function (e) {
-		    
-		    // If the clicked element is not the menu
-		    if (!$(e.target).parents(".custom-menu").length > 0) {
-		        
-		        // Hide it
-		        $(".custom-menu").hide(100);
-		    }
-		});
+				        }, "POST");
+					}
+				});
 
+			// Trigger action when the contexmenu is about to be shown
+				$('.file_folder_container').bind("contextmenu", function (event) {
+				    
+				    // Avoid the real one
+				    event.preventDefault();
+				    
+				    // Show contextmenu
+				    $(".custom-menu").finish().toggle(100).
+				    
+				    // In the right position (the mouse)
+				    css({
+				        top: event.pageY + "px",
+				        left: event.pageX + "px"
+				    });
+				});
 
-		// If the menu element is clicked
-		$(".custom-menu li").click(function(){
-		    
-		    // This is the triggered action name
-		    switch($(this).attr("data-action")) {
-		        
-		        // A case for each action. Your actions here
-		        case "first": alert("first"); break;
-		        case "second": alert("second"); break;
-		        case "third": alert("third"); break;
-		    }
-		  
-		    // Hide it AFTER the action was triggered
-		    $(".custom-menu").hide(100);
-		  });
+			// If the document is clicked somewhere
+				$(document).bind("mousedown", function (e) {
+				    
+				    // If the clicked element is not the menu
+				    if (!$(e.target).parents(".custom-menu").length > 0) {
+				        
+				        // Hide it
+				        $(".custom-menu").hide(100);
+				    }
+				});
+
+			// If the menu element is clicked
+				$(".custom-menu li").click(function(){
+				    
+				    // This is the triggered action name
+				    switch($(this).attr("data-action")) {
+				        
+				        // A case for each action. Your actions here
+				        case "first": alert("first"); break;
+				        case "second": alert("second"); break;
+				        case "third": alert("third"); break;
+				    }
+				  
+				    // Hide it AFTER the action was triggered
+				    $(".custom-menu").hide(100);
+				  });
 
 			}
 		});	
