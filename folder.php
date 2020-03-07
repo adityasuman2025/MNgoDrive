@@ -6,8 +6,15 @@
 		header("location: index.php");
 		die();
 	}
+	else //if someone is logged
+	{
+		$logged_user_id = $_COOKIE['MNgoDrive_logged_user_id'];
 
-	$logged_user_id = $_COOKIE['MNgoDrive_logged_user_id'];
+		if(isset($_POST['folder_id']))
+			$folder_id = $_POST['folder_id'];
+		else
+			die("Something is wrong");
+	}
 ?>
 <html>
 <head>
@@ -172,9 +179,10 @@
 		api_address = "<?php echo $api_address; ?>";		
 
 		var logged_user_id = "<?php echo $logged_user_id; ?>";
+		var folder_id = "<?php echo $folder_id; ?>";
 
-		var post_address = api_address + "get_user_root_file_folder.php";
-		$.post(post_address, {logged_user_id: logged_user_id}, function(data)
+		var post_address = api_address + "get_user_folder_contents.php";
+		$.post(post_address, {logged_user_id: logged_user_id, folder_id: folder_id}, function(data)
 		{
 			if(data == -100)
 			{
@@ -205,9 +213,8 @@
 					}
 					else if(type == "file")
 					{
-						var file_address = resultArray[index]['file_address'];
-
 						var icon_name = "file";
+						var file_address = resultArray[index]['file_address'];
 
 						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" file_address="' + file_address + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + name + '</div></div>';
 					}
@@ -219,7 +226,7 @@
 				$('.drive_container').html(html);
 				showCustomContext('file_folder_container');
 
-			//on clicking on any file/folder
+			//on clicking on file/folder
 				$('.file_folder_container').on("click", function()
 				{
 					var type = $(this).attr("type");
