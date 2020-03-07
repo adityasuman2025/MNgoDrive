@@ -45,7 +45,7 @@
 			    <button class="button_btn">Login</button>
 			</div>
 		</form>
-		<div class="error"></div>		
+		<div class="error"></div>
 	</center>
 </div>
 	

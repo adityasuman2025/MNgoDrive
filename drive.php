@@ -88,6 +88,7 @@
 		    <div class="translate"></div>
 		   	<button class="button_btn">Create Folder</button>
 		</div>
+		<div class="error"></div>
 	</div>
 
 <!------custom context menu----------->
@@ -206,14 +207,15 @@
 		//on clicking on create folder btn
 			$('#create_folder_btn').on("click", function()
 			{
+				$('.error').text("");
+				$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
+
 				var logged_user_id = "<?php echo $logged_user_id; ?>";
 				var new_folder_name = $('#create_folder_text_input').val().trim();
 				
 				var post_address = api_address + "create_new_folder.php";
 				$.post(post_address, {logged_user_id: logged_user_id, new_folder_name: new_folder_name}, function(data)
-				{
-					console.log(data);
-
+				{				
 					if(data == -100)
 					{
 						$('.error').text("Database connection error");
@@ -222,9 +224,21 @@
 					{
 						$('.error').text("Something went wrong");
 					}
+					else if(data == -2)
+					{
+						$('.error').text("This folder name already exists");
+					}
+					else if(data == 0)
+					{
+						$('.error').text("Fail to create new folder");
+					}
+					else if(data == 1) //new folder created successfully
+					{						
+					 	location.reload();
+					}
 					else
 					{
-						
+						$('.error').text("Unknown error");
 					}
 				});
 			});	
