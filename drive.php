@@ -62,21 +62,40 @@
 
 <!-------add file/folder btn area---->
 	<div class="add_btns">
-		<div class="button-5">
+		<div class="button-5" id="make_new_folder_btn">
 		    <div class="translate"></div>
 		   	<button class="button_btn">New Folder</button>
 		</div>
-		<div class="button-5">
+		<div class="button-5" id="upload_file_btn">
 		    <div class="translate"></div>
 		    <button class="button_btn">Upload File</button>
 		</div>
 	</div>
 
-<ul class='custom-menu'>
-  <li data-action = "first">First thing</li>
-  <li data-action = "second">Second thing</li>
-  <li data-action = "third">Third thing</li>
-</ul>
+<!--------overlay modal--------->
+	<div class="overlay_backgrnd"></div>
+	<div class="overlay_div">
+		<div class="close_overlay_btn"></div>
+		<br />
+		<div class="overlay_content">dsf</div>
+	</div>
+
+<!--new folder create modal--------->
+	<div id="make_folder_sample">
+		<input type="text" id="create_folder_text_input" placeholder="Folder Name" />
+		<br />
+		<div class="button-5" id="create_folder_btn">
+		    <div class="translate"></div>
+		   	<button class="button_btn">Create Folder</button>
+		</div>
+	</div>
+
+<!------custom context menu----------->
+	<ul class='custom-menu'>
+		<li data-action = "first">First thing</li>
+		<li data-action = "second">Second thing</li>
+		<li data-action = "third">Third thing</li>
+	</ul>
 
 <!-------script-------->
 	<script type="text/javascript">
@@ -109,7 +128,7 @@
 	        document.cookie = name + '=; expires=' + now.toGMTString() + ";path=/";
 	    }
 
-	//functiom to show custom context menu
+	//function to show custom context menu
 		document.addEventListener('contextmenu', event => event.preventDefault()); //removing default context menu
 
 		function showCustomContext(folder_class)
@@ -165,6 +184,50 @@
 			{
 				location.href = "index.php";
 			});
+		});
+
+	//on clicking on close btn
+		$('.close_overlay_btn, .overlay_backgrnd').on("click", function()
+		{
+			$('.overlay_backgrnd').fadeOut(200);
+			$('.overlay_div').fadeOut(200);
+		});
+
+	//on clicking on new folder btn		
+		$('#make_new_folder_btn').on("click", function()
+		{
+		//displaying the overlay div and its content	
+			$('.overlay_backgrnd').fadeIn(400);
+			$('.overlay_div').fadeIn(400);
+
+			var html = $('#make_folder_sample').html();
+			$('.overlay_content').html(html);
+
+		//on clicking on create folder btn
+			$('#create_folder_btn').on("click", function()
+			{
+				var logged_user_id = "<?php echo $logged_user_id; ?>";
+				var new_folder_name = $('#create_folder_text_input').val().trim();
+				
+				var post_address = api_address + "create_new_folder.php";
+				$.post(post_address, {logged_user_id: logged_user_id, new_folder_name: new_folder_name}, function(data)
+				{
+					console.log(data);
+
+					if(data == -100)
+					{
+						$('.error').text("Database connection error");
+					}
+					else if(data == -1)
+					{
+						$('.error').text("Something went wrong");
+					}
+					else
+					{
+						
+					}
+				});
+			});	
 		});
 
 	//getting root folder and file of that user

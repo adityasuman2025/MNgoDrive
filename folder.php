@@ -68,22 +68,19 @@
 	</div>
 
 <!-------add file/folder btn area---->
-	<div class="add_btns">
-		<div class="button-5">
-		    <div class="translate"></div>
-		   	<button class="button_btn">New Folder</button>
-		</div>
+	<div class="add_btns">		
 		<div class="button-5">
 		    <div class="translate"></div>
 		    <button class="button_btn">Upload File</button>
 		</div>
 	</div>
 
-<ul class='custom-menu'>
-  <li data-action = "first">First thing</li>
-  <li data-action = "second">Second thing</li>
-  <li data-action = "third">Third thing</li>
-</ul>
+<!------custom context menu----------->
+	<ul class='custom-menu'>
+		<li data-action = "first">First thing</li>
+		<li data-action = "second">Second thing</li>
+		<li data-action = "third">Third thing</li>
+	</ul>
 
 <!-------script-------->
 	<script type="text/javascript">
@@ -116,7 +113,7 @@
 	        document.cookie = name + '=; expires=' + now.toGMTString() + ";path=/";
 	    }
 
-	//functiom to show custom context menu
+	//function to show custom context menu
 		document.addEventListener('contextmenu', event => event.preventDefault()); //removing default context menu
 
 		function showCustomContext(folder_class)
