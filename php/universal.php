@@ -6,13 +6,13 @@
 	
 	$website = $_SERVER['HTTP_HOST']; //dns address of the site 
 	if($website == "localhost")
-	{	
+	{
 		$api_address = "http://localhost/MNgo/drive_api/";		
 	}
 	else
 	{
 		$api_address = "http://" . $website . "/MNgo/drive_api/"; //change this address when deplying somewhere else
-	}	
+	}
 
 	$isSomeOneLogged = false;
 	if(isset($_COOKIE['MNgoDrive_logged_user_id']))

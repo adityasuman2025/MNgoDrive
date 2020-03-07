@@ -297,7 +297,7 @@ body
 		text-align: center;		
 	}
 
-	#make_folder_sample
+	#make_folder_sample, #upload_file_sample
 	{
 		display: none;
 	}

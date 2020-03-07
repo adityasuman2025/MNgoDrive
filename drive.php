@@ -91,6 +91,13 @@
 		<div class="error"></div>
 	</div>
 
+<!--new file upload modal--------->
+	<div id="upload_file_sample">
+		<input type="file" name="file" id="file">
+		<br />
+		<div class="error"></div>
+	</div>
+
 <!------custom context menu----------->
 	<ul class='custom-menu'>
 		<li data-action = "first">First thing</li>
@@ -242,6 +249,64 @@
 					}
 				});
 			});	
+		});
+
+	//on clicking on upload file btn		
+		$('#upload_file_btn').on("click", function()
+		{
+		//displaying the overlay div and its content	
+			$('.overlay_backgrnd').fadeIn(400);
+			$('.overlay_div').fadeIn(400);
+
+			var html = $('#upload_file_sample').html();
+			$('.overlay_content').html(html);
+
+		//for uploading file
+			var post_address = api_address + "upload_file_on_server.php";
+		    $(document).on('change', '#file', function()
+		    {
+		      	$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
+
+	      	//sending upload request to api 
+		        var property = document.getElementById("file").files[0];
+		        var image_name = property.name;
+		        var image_extension = image_name.split('.').pop().toLowerCase();
+		        
+		        var form_data = new FormData();
+				form_data.append("file", property);
+				$.ajax(
+				{
+					url: post_address,
+					method: "POST",
+					data: form_data,
+					contentType: false,
+					cache: false,
+					processData: false,
+					beforeSend:function()
+					{
+						$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\" /></br>Uploading File").css('color', 'black');
+					},
+					success: function(data)
+					{											
+						if(data == 0)
+						{
+							$('.error').text('Failed to upload file').css("color", 'red');
+						}
+						else if(data == -2)
+						{
+							$('.error').text("file uploading directory not present on server").css("color", 'red');
+						}
+						else if(data == -1)
+						{
+							$('.error').text("Something went wrong").css("color", 'red');
+						}
+						else
+						{
+							location.reload();
+						}
+					}
+				});
+		    });
 		});
 
 	//getting root folder and file of that user
