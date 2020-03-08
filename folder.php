@@ -247,11 +247,13 @@
 				{
 					var tempHTML = "";
 
-					var name = (resultArray[index]['name']).substring(0, 18);
+					var name = (resultArray[index]['name']);
 					var type = resultArray[index]['type'];
-					
+
 					if(type == "folder")
 					{
+						name = name.substring(0, 18);
+
 						var icon_name = "folder";
 						var folder_id = resultArray[index]['folder_id'];
 
@@ -262,7 +264,13 @@
 						var icon_name = "file";
 						var file_address = resultArray[index]['file_address'];
 
-						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" file_address="' + file_address + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + name + '</div></div>';
+						var name_extension = name.split('.').pop().toLowerCase();
+						var only_name = name.split('.').slice(0, -1).join('.')
+						only_name = only_name.substring(0, 13);
+
+						var display_name = only_name + "." + name_extension;
+
+						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" file_address="' + file_address + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + display_name + '</div></div>';
 					}
 
 					html += tempHTML;
