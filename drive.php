@@ -80,7 +80,7 @@
 		<div class="overlay_content">dsf</div>
 	</div>
 
-<!--new folder create modal--------->
+<!------new folder create modal--------->
 	<div id="make_folder_sample">
 		<input type="text" id="create_folder_text_input" placeholder="Folder Name" />
 		<br />
@@ -91,10 +91,21 @@
 		<div class="error"></div>
 	</div>
 
-<!--new file upload modal--------->
+<!------new file upload modal--------->
 	<div id="upload_file_sample">
 		<input type="file" name="file" id="file">
 		<br />
+		<div class="error"></div>
+	</div>
+
+<!------rename file/folder modal--------->
+	<div id="rename_file_folder_sample">
+		<input type="text" id="rename_file_folder_text_input" placeholder="New Name" />
+		<br />
+		<div class="button-5" id="rename_btn">
+		    <div class="translate"></div>
+		   	<button class="button_btn">Rename</button>
+		</div>
 		<div class="error"></div>
 	</div>
 
@@ -103,6 +114,7 @@
 		<li>Open</li>
 		<li>Rename</li>
 		<li>Delete</li>
+		<li>Share</li>
 		<li>Details</li>
 	</ul>
 
@@ -124,11 +136,13 @@
 			{
 			//getting the details of the selected folder/file	
 				var type = $(this).attr('type');
+				var name_text = $(this).find('.name_text').text().trim();
 				if(type == "folder")
 				{
 					var folder_id =  $(this).attr('folder_id');
 
 					$(".custom-menu").attr('folder_id', folder_id);
+					$(".custom-menu").attr('name_text', name_text);
 				}
 				else if(type == "file")
 				{
@@ -137,6 +151,7 @@
 
 					$(".custom-menu").attr('file_id', file_id);
 					$(".custom-menu").attr('file_address', file_address);
+					$(".custom-menu").attr('name_text', name_text);
 				}
 				$(".custom-menu").attr('type', type);
 
@@ -172,8 +187,9 @@
 			    switch(text) 
 			    {
 			        case "Open": open_File_Folder($(this).parent()); break;
-			        case "Rename": console.log(type); break;
+			        case "Rename": rename_File_Folder($(this).parent()); break;
 			        case "Delete": console.log(type); break;
+			        case "Share": console.log(type); break;
 			        case "Details": console.log(type); break;
 			    }
 			  
@@ -214,7 +230,6 @@
 				$('.error').text("");
 				$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
 
-				var logged_user_id = "<?php echo $logged_user_id; ?>";
 				var new_folder_name = $('#create_folder_text_input').val().trim();
 				
 				var post_address = api_address + "create_new_folder.php";
@@ -386,7 +401,7 @@
 		        {
 		        }, "POST", "_blank");
 			}
-			else //displaying the content of the folder
+			else if(type == "folder") //displaying the content of the folder
 			{
 				var folder_id = $(_this_).attr("folder_id");		
 				$.redirect("folder.php",
@@ -395,6 +410,63 @@
 		        }, "POST");
 			}
 		}	
+	
+	//function to rename folder/file
+		function rename_File_Folder(_this_)
+		{
+		//displaying the overlay div and its content	
+			$('.overlay_backgrnd').fadeIn(400);
+			$('.overlay_div').fadeIn(400);
+
+			var old_name = $(_this_).attr('name_text');
+			// console.log(old_name);
+
+			$('#rename_file_folder_sample #rename_file_folder_text_input').attr("placeholder", old_name);
+			var html = $('#rename_file_folder_sample').html();
+			$('.overlay_content').html(html);
+
+		//on pressing rename btn
+			$('#rename_btn').on("click", function()
+			{
+				$('.error').text("");
+				$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
+
+				var new_name = $('#rename_file_folder_text_input').val().trim();
+				
+				var type = $(_this_).attr("type");				
+				if(type == "file")
+					var id = $(_this_).attr("file_id");
+				else if(type == "folder")
+					var id = $(_this_).attr("folder_id");				
+				
+				var post_address = api_address + "rename_file_folder.php";
+				$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id, old_name: old_name, new_name: new_name}, function(data)
+				{
+					// console.log(data);
+
+					if(data == -100)
+					{
+						$('.error').text("Database connection error");
+					}
+					else if(data == -1)
+					{
+						$('.error').text("Something went wrong");
+					}
+					else if(data == 0)
+					{
+						$('.error').text("Fail to rename");
+					}
+					else if(data == 1) //renamed successfully
+					{						
+					 	location.reload();
+					}
+					else
+					{
+						$('.error').text("Unknown error");
+					}
+				});
+			});
+		}
 	</script>
 </body>
 </html>
