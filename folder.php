@@ -163,7 +163,7 @@
 			});
 		});
 
-	//on clicking on upload file btn		
+	//on clicking on upload file btn
 		$('#upload_file_btn').on("click", function()
 		{
 		//displaying the overlay div and its content	
@@ -226,7 +226,7 @@
 		    });
 		});
 
-	//getting root folder and file of that user		
+	//getting root folder and file of that user
 		var post_address = api_address + "get_user_folder_contents.php";
 		$.post(post_address, {logged_user_id: logged_user_id, folder_id: folder_id}, function(data)
 		{
@@ -280,29 +280,35 @@
 				$('.drive_container').html(html);
 				showCustomContext('file_folder_container');
 
-			//on clicking on file/folder
+			//on clicking on any file/folder
 				$('.file_folder_container').on("click", function()
 				{
-					var type = $(this).attr("type");
-					if(type == "file") //opening the file new tab
-					{
-						var file_address = $(this).attr("file_address");
-
-						$.redirect(file_address,
-				        {
-				        }, "POST", "_blank");
-					}
-					else //displaying the content of the folder
-					{
-						var folder_id = $(this).attr("folder_id");		
-						$.redirect("folder.php",
-				        {
-				        	folder_id: folder_id
-				        }, "POST");
-					}
+					open_File_Folder($(this));
 				});
 			}
-		});	
+		});
+
+	//function to open file/folder
+		function open_File_Folder(_this_)
+		{
+			var type = $(_this_).attr("type");
+			if(type == "file") //opening the file new tab
+			{
+				var file_address = $(_this_).attr("file_address");
+
+				$.redirect(file_address,
+		        {
+		        }, "POST", "_blank");
+			}
+			else //displaying the content of the folder
+			{
+				var folder_id = $(_this_).attr("folder_id");		
+				$.redirect("folder.php",
+		        {
+		        	folder_id: folder_id
+		        }, "POST");
+			}
+		}
 	</script>
 </body>
 </html>

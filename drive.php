@@ -100,9 +100,10 @@
 
 <!------custom context menu----------->
 	<ul class='custom-menu'>
-		<li data-action = "first">First thing</li>
-		<li data-action = "second">Second thing</li>
-		<li data-action = "third">Third thing</li>
+		<li>Open</li>
+		<li>Rename</li>
+		<li>Delete</li>
+		<li>Details</li>
 	</ul>
 
 <!-------script-------->
@@ -119,15 +120,33 @@
 		function showCustomContext(folder_class)
 		{
 		// Trigger action when the contexmenu is about to be shown
-			$('.' + folder_class).bind("contextmenu", function (event) {
-			    
-			    // Avoid the real one
+			$('.' + folder_class).bind("contextmenu", function (event)
+			{
+			//getting the details of the selected folder/file	
+				var type = $(this).attr('type');
+				if(type == "folder")
+				{
+					var folder_id =  $(this).attr('folder_id');
+
+					$(".custom-menu").attr('folder_id', folder_id);
+				}
+				else if(type == "file")
+				{
+					var file_id =  $(this).attr('file_id');
+					var file_address = $(this).attr('file_address');
+
+					$(".custom-menu").attr('file_id', file_id);
+					$(".custom-menu").attr('file_address', file_address);
+				}
+				$(".custom-menu").attr('type', type);
+
+		    // Avoid the real one
 			    event.preventDefault();
 			    
-			    // Show contextmenu
+		    // Show contextmenu
 			    $(".custom-menu").finish().toggle(100).
 			    
-			    // In the right position (the mouse)
+		    // In the right position (the mouse)
 			    css({
 			        top: event.pageY + "px",
 			        left: event.pageX + "px"
@@ -146,15 +165,16 @@
 			});
 
 		// If the menu element is clicked
-			$(".custom-menu li").click(function(){
-			    
-			    // This is the triggered action name
-			    switch($(this).attr("data-action")) {
-			        
-			        // A case for each action. Your actions here
-			        case "first": alert("first"); break;
-			        case "second": alert("second"); break;
-			        case "third": alert("third"); break;
+			$(".custom-menu li").click(function()
+			{
+		    // This is the triggered action name
+		    	var text = $(this).text().trim();
+			    switch(text) 
+			    {
+			        case "Open": open_File_Folder($(this).parent()); break;
+			        case "Rename": console.log(type); break;
+			        case "Delete": console.log(type); break;
+			        case "Details": console.log(type); break;
 			    }
 			  
 			    // Hide it AFTER the action was triggered
@@ -328,6 +348,7 @@
 					{
 						var icon_name = "file";
 						var file_address = resultArray[index]['file_address'];
+						var file_id = resultArray[index]['file_id'];
 
 						var name_extension = name.split('.').pop().toLowerCase();
 						var only_name = name.split('.').slice(0, -1).join('.')
@@ -335,7 +356,7 @@
 
 						var display_name = only_name + "." + name_extension;
 
-						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" file_address="' + file_address + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + display_name + '</div></div>';
+						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" file_id="' + file_id + '" file_address="' + file_address + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + display_name + '</div></div>';
 					}
 
 					html += tempHTML;
@@ -348,26 +369,32 @@
 			//on clicking on any file/folder
 				$('.file_folder_container').on("click", function()
 				{
-					var type = $(this).attr("type");
-					if(type == "file") //opening the file new tab
-					{
-						var file_address = $(this).attr("file_address");
-
-						$.redirect(file_address,
-				        {
-				        }, "POST", "_blank");
-					}
-					else //displaying the content of the folder
-					{
-						var folder_id = $(this).attr("folder_id");		
-						$.redirect("folder.php",
-				        {
-				        	folder_id: folder_id
-				        }, "POST");
-					}
+					open_File_Folder($(this));
 				});
 			}
-		});	
+		});
+
+	//function to open file/folder
+		function open_File_Folder(_this_)
+		{
+			var type = $(_this_).attr("type");
+			if(type == "file") //opening the file new tab
+			{
+				var file_address = $(_this_).attr("file_address");
+
+				$.redirect(file_address,
+		        {
+		        }, "POST", "_blank");
+			}
+			else //displaying the content of the folder
+			{
+				var folder_id = $(_this_).attr("folder_id");		
+				$.redirect("folder.php",
+		        {
+		        	folder_id: folder_id
+		        }, "POST");
+			}
+		}	
 	</script>
 </body>
 </html>
