@@ -125,13 +125,7 @@
 	</div>
 
 <!------custom context menu----------->
-	<ul class='custom-menu'>
-		<li>Open</li>
-		<li>Rename</li>
-		<li>Delete</li>
-		<li>Share</li>
-		<li>Details</li>
-	</ul>
+	<ul class='custom-menu'></ul>
 
 <!-------script-------->
 	<script type="text/javascript">
@@ -146,6 +140,8 @@
 
 		function showCustomContext(folder_class)
 		{
+			var html = "<li>Open</li><li>Rename</li><li>Delete</li><li>Details</li>";
+
 		// Trigger action when the contexmenu is about to be shown
 			$('.' + folder_class).bind("contextmenu", function (event)
 			{
@@ -156,17 +152,22 @@
 				{
 					var folder_id =  $(this).attr('folder_id');
 
+					$(".custom-menu").html(html);
 					$(".custom-menu").attr('folder_id', folder_id);
 					$(".custom-menu").attr('name_text', name_text);
+
+					$(".custom-menu").attr('file_address', "folder_address_not_allowed");
 				}
 				else if(type == "file")
 				{
 					var file_id =  $(this).attr('file_id');
 					var file_address = $(this).attr('file_address');
 
+					$(".custom-menu").html(html);
+					$(".custom-menu").append("<li>Share</li>");
 					$(".custom-menu").attr('file_id', file_id);
 					$(".custom-menu").attr('file_address', file_address);
-					$(".custom-menu").attr('name_text', name_text);
+					$(".custom-menu").attr('name_text', name_text);					
 				}
 				$(".custom-menu").attr('type', type);
 
@@ -181,6 +182,24 @@
 			        top: event.pageY + "px",
 			        left: event.pageX + "px"
 			    });
+
+			// If the menu element is clicked
+				$(".custom-menu li").click(function()
+				{
+			    // This is the triggered action name
+			    	var text = $(this).text().trim();
+				    switch(text) 
+				    {
+				        case "Open": open_File_Folder($(this).parent()); break;
+				        case "Rename": rename_File_Folder($(this).parent()); break;
+				        case "Delete": delete_File_Folder($(this).parent()); break;
+				        case "Share": share_File($(this).parent()); break;
+				        case "Details": console.log(type); break;
+				    }
+				  
+				    // Hide it AFTER the action was triggered
+				    $(".custom-menu").hide(100);
+				});
 			});
 
 		// If the document is clicked somewhere
@@ -191,24 +210,6 @@
 			        // Hide it
 			        $(".custom-menu").hide(100);
 			    }
-			});
-
-		// If the menu element is clicked
-			$(".custom-menu li").click(function()
-			{
-		    // This is the triggered action name
-		    	var text = $(this).text().trim();
-			    switch(text) 
-			    {
-			        case "Open": open_File_Folder($(this).parent()); break;
-			        case "Rename": rename_File_Folder($(this).parent()); break;
-			        case "Delete": delete_File_Folder($(this).parent()); break;
-			        case "Share": console.log(type); break;
-			        case "Details": console.log(type); break;
-			    }
-			  
-			    // Hide it AFTER the action was triggered
-			    $(".custom-menu").hide(100);
 			});
 		}
 
@@ -540,6 +541,26 @@
 					}
 				});
 			});
+		}
+	
+	//function to share file location/link
+		function share_File(element)
+		{
+			var web_address   = window.location.origin;   // Returns base URL (https://example.com)
+			if(web_address == "http://localhost") //for local server
+				web_address = "http://localhost/MNgoDrive";
+			
+			var file_address = $(element).attr("file_address");
+			var full_address = web_address + "/" + file_address;
+
+		//copy to clipboard stuffs	
+			var $temp = $("<input>");
+			$("body").append($temp);
+			$temp.val(full_address).select();
+			document.execCommand("copy");
+			$temp.remove();
+
+			alert("copied");
 		}
 	</script>
 </body>
