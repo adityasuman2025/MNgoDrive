@@ -107,34 +107,11 @@
 
 <!-------script-------->
 	<script type="text/javascript">
-	//function to handle cookies  
-	    function setCookie(name,value,mins) 
-	    {
-	       	var now = new Date();
-	        var time = now.getTime();
-	        var expireTime = time + 60000 * mins;
-	        now.setTime(expireTime);
-	        var tempExp = 'Wed, 31 Oct 2012 08:50:17 GMT';
+		session_length = "<?php echo $session_time; ?>";
+		api_address = "<?php echo $api_address; ?>";		
 
-	      document.cookie =  name + "=" + value + ";expires=" + now.toGMTString() + ";path=/";
-	    }
-
-	    function getCookie(name) {
-	        var nameEQ = name + "=";
-	        var ca = document.cookie.split(';');
-	        for(var i=0;i < ca.length;i++) {
-	            var c = ca[i];
-	            while (c.charAt(0)==' ') c = c.substring(1,c.length);
-	            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-	        }
-	        return null;
-	    }
-
-	    function eraseCookie(name) 
-	    {
-	    	var now = new Date(); 
-	        document.cookie = name + '=; expires=' + now.toGMTString() + ";path=/";
-	    }
+		logged_user_id = "<?php echo $logged_user_id; ?>";
+		folder_id = "0";
 
 	//function to show custom context menu
 		document.addEventListener('contextmenu', event => event.preventDefault()); //removing default context menu
@@ -201,7 +178,7 @@
 			$('.overlay_div').fadeOut(200);
 		});
 
-	//on clicking on new folder btn		
+	//on clicking on new folder btn	
 		$('#make_new_folder_btn').on("click", function()
 		{
 		//displaying the overlay div and its content	
@@ -251,7 +228,7 @@
 			});	
 		});
 
-	//on clicking on upload file btn		
+	//on clicking on upload file btn
 		$('#upload_file_btn').on("click", function()
 		{
 		//displaying the overlay div and its content	
@@ -261,10 +238,7 @@
 			var html = $('#upload_file_sample').html();
 			$('.overlay_content').html(html);
 
-		//for uploading file
-			var logged_user_id = "<?php echo $logged_user_id; ?>";
-			var folder_id = "0";
-
+		//for uploading file			
 			var post_address = api_address + "upload_file_on_server.php";
 		    $(document).on('change', '#file', function()
 		    {
@@ -318,11 +292,6 @@
 		});
 
 	//getting root folder and file of that user
-		session_length = "<?php echo $session_time; ?>";
-		api_address = "<?php echo $api_address; ?>";		
-
-		var logged_user_id = "<?php echo $logged_user_id; ?>";
-
 		var post_address = api_address + "get_user_root_file_folder.php";
 		$.post(post_address, {logged_user_id: logged_user_id}, function(data)
 		{

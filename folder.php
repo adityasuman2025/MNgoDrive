@@ -68,11 +68,26 @@
 	</div>
 
 <!-------add file/folder btn area---->
-	<div class="add_btns">		
-		<div class="button-5">
+	<div class="add_btns">
+		<div class="button-5" id="upload_file_btn">
 		    <div class="translate"></div>
 		    <button class="button_btn">Upload File</button>
 		</div>
+	</div>
+
+<!--------overlay modal--------->
+	<div class="overlay_backgrnd"></div>
+	<div class="overlay_div">
+		<div class="close_overlay_btn"></div>
+		<br />
+		<div class="overlay_content">dsf</div>
+	</div>
+
+<!--new file upload modal--------->
+	<div id="upload_file_sample">
+		<input type="file" name="file" id="file">
+		<br />
+		<div class="error"></div>
 	</div>
 
 <!------custom context menu----------->
@@ -84,34 +99,11 @@
 
 <!-------script-------->
 	<script type="text/javascript">
-	//function to handle cookies  
-	    function setCookie(name,value,mins) 
-	    {
-	       	var now = new Date();
-	        var time = now.getTime();
-	        var expireTime = time + 60000 * mins;
-	        now.setTime(expireTime);
-	        var tempExp = 'Wed, 31 Oct 2012 08:50:17 GMT';
+		session_length = "<?php echo $session_time; ?>";
+		api_address = "<?php echo $api_address; ?>";		
 
-	      document.cookie =  name + "=" + value + ";expires=" + now.toGMTString() + ";path=/";
-	    }
-
-	    function getCookie(name) {
-	        var nameEQ = name + "=";
-	        var ca = document.cookie.split(';');
-	        for(var i=0;i < ca.length;i++) {
-	            var c = ca[i];
-	            while (c.charAt(0)==' ') c = c.substring(1,c.length);
-	            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-	        }
-	        return null;
-	    }
-
-	    function eraseCookie(name) 
-	    {
-	    	var now = new Date(); 
-	        document.cookie = name + '=; expires=' + now.toGMTString() + ";path=/";
-	    }
+		logged_user_id = "<?php echo $logged_user_id; ?>";
+		folder_id = "<?php echo $folder_id; ?>";
 
 	//function to show custom context menu
 		document.addEventListener('contextmenu', event => event.preventDefault()); //removing default context menu
@@ -171,13 +163,70 @@
 			});
 		});
 
-	//getting root folder and file of that user
-		session_length = "<?php echo $session_time; ?>";
-		api_address = "<?php echo $api_address; ?>";		
+	//on clicking on upload file btn		
+		$('#upload_file_btn').on("click", function()
+		{
+		//displaying the overlay div and its content	
+			$('.overlay_backgrnd').fadeIn(400);
+			$('.overlay_div').fadeIn(400);
 
-		var logged_user_id = "<?php echo $logged_user_id; ?>";
-		var folder_id = "<?php echo $folder_id; ?>";
+			var html = $('#upload_file_sample').html();
+			$('.overlay_content').html(html);
 
+		//for uploading file			
+			var post_address = api_address + "upload_file_on_server.php";
+		    $(document).on('change', '#file', function()
+		    {
+		      	$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
+
+	      	//sending upload request to api 
+		        var property = document.getElementById("file").files[0];
+		        var image_name = property.name;
+		        var image_extension = image_name.split('.').pop().toLowerCase();
+		        
+		        var form_data = new FormData();
+				form_data.append("file", property);
+				form_data.append("logged_user_id", logged_user_id);
+				form_data.append("folder_id", folder_id);
+				$.ajax(
+				{
+					url: post_address,
+					method: "POST",
+					data: form_data,
+					contentType: false,
+					cache: false,
+					processData: false,
+					beforeSend:function()
+					{
+						$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\" /></br>Uploading File").css('color', '#f1f1f1');
+					},
+					success: function(data)
+					{		
+						// console.log(data);
+						if(data == 0)
+						{
+							$('.error').text('Failed to upload file').css("color", 'red');
+						}
+						else if(data == -2)
+						{
+							$('.error').text("file uploading directory not present on server").css("color", 'red');
+						}
+						else if(data == -1)
+						{
+							$('.error').text("Something went wrong").css("color", 'red');
+						}
+						else if(data == 1)
+						{
+							location.reload();
+						}
+						else
+							$('.error').text("Unknown error").css("color", 'red');
+					}
+				});
+		    });
+		});
+
+	//getting root folder and file of that user		
 		var post_address = api_address + "get_user_folder_contents.php";
 		$.post(post_address, {logged_user_id: logged_user_id, folder_id: folder_id}, function(data)
 		{
