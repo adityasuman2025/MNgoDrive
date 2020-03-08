@@ -109,6 +109,21 @@
 		<div class="error"></div>
 	</div>
 
+<!------delete file/folder modal--------->
+	<div id="delete_file_folder_sample">
+		<div class="name_text">Are you sure to delete</div>
+		
+		<div class="button-5" id="yes_btn">
+		    <div class="translate"></div>
+		   	<button class="button_btn">Yes</button>
+		</div>
+		<div class="button-5" id="cancel_btn">
+		    <div class="translate"></div>
+		   	<button class="button_btn">Cancel</button>
+		</div>
+		<div class="error"></div>
+	</div>
+
 <!------custom context menu----------->
 	<ul class='custom-menu'>
 		<li>Open</li>
@@ -169,11 +184,10 @@
 			});
 
 		// If the document is clicked somewhere
-			$(document).bind("mousedown", function (e) {
-			    
+			$(document).bind("mousedown", function (e) 
+			{
 			    // If the clicked element is not the menu
 			    if (!$(e.target).parents(".custom-menu").length > 0) {
-			        
 			        // Hide it
 			        $(".custom-menu").hide(100);
 			    }
@@ -188,7 +202,7 @@
 			    {
 			        case "Open": open_File_Folder($(this).parent()); break;
 			        case "Rename": rename_File_Folder($(this).parent()); break;
-			        case "Delete": console.log(type); break;
+			        case "Delete": delete_File_Folder($(this).parent()); break;
 			        case "Share": console.log(type); break;
 			        case "Details": console.log(type); break;
 			    }
@@ -439,8 +453,68 @@
 				else if(type == "folder")
 					var id = $(_this_).attr("folder_id");				
 				
+			//sending rqst to api	
 				var post_address = api_address + "rename_file_folder.php";
 				$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id, old_name: old_name, new_name: new_name}, function(data)
+				{
+					// console.log(data);
+
+					if(data == -100)
+					{
+						$('.error').text("Database connection error");
+					}
+					else if(data == -1)
+					{
+						$('.error').text("Something went wrong");
+					}
+					else if(data == 0)
+					{
+						$('.error').text("Fail to rename");
+					}
+					else if(data == 1) //renamed successfully
+					{						
+					 	location.reload();
+					}
+					else
+					{
+						$('.error').text("Unknown error");
+					}
+				});
+			});
+		}
+
+	//function to delete folder/file
+		function delete_File_Folder(_this_)
+		{
+		//displaying the overlay div and its content	
+			$('.overlay_backgrnd').fadeIn(400);
+			$('.overlay_div').fadeIn(400);
+
+			var html = $('#delete_file_folder_sample').html();
+			$('.overlay_content').html(html);
+
+		//on pressing cancel btn
+			$('#cancel_btn').on("click", function()
+			{
+				$('.overlay_backgrnd').fadeOut(200);
+				$('.overlay_div').fadeOut(200);
+			});
+
+		//on pressing yes btn
+			$('#yes_btn').on("click", function()
+			{
+				$('.error').text("");
+				$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
+
+				var type = $(_this_).attr("type");				
+				if(type == "file")
+					var id = $(_this_).attr("file_id");
+				else if(type == "folder")
+					var id = $(_this_).attr("folder_id");				
+				
+			//sending rqst to api	
+				var post_address = api_address + "delete_file_folder.php";
+				$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id}, function(data)
 				{
 					// console.log(data);
 
