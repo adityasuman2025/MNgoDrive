@@ -244,7 +244,7 @@ body
 /*--------overlay div stuffs---------*/
 	.overlay_backgrnd
 	{
-		position: absolute;
+		position: fixed;
 		left: 0;
 		top: 0;
 		z-index: 10;
@@ -259,7 +259,7 @@ body
 
 	.overlay_div
 	{
-		position: absolute;
+		position: fixed;
 		left: 0;
 		right: 0;
 		bottom: 0;

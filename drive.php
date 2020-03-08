@@ -262,6 +262,9 @@
 			$('.overlay_content').html(html);
 
 		//for uploading file
+			var logged_user_id = "<?php echo $logged_user_id; ?>";
+			var folder_id = "0";
+
 			var post_address = api_address + "upload_file_on_server.php";
 		    $(document).on('change', '#file', function()
 		    {
@@ -274,6 +277,8 @@
 		        
 		        var form_data = new FormData();
 				form_data.append("file", property);
+				form_data.append("logged_user_id", logged_user_id);
+				form_data.append("folder_id", folder_id);
 				$.ajax(
 				{
 					url: post_address,
@@ -284,10 +289,11 @@
 					processData: false,
 					beforeSend:function()
 					{
-						$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\" /></br>Uploading File").css('color', 'black');
+						$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\" /></br>Uploading File").css('color', '#f1f1f1');
 					},
 					success: function(data)
-					{											
+					{		
+						// console.log(data);
 						if(data == 0)
 						{
 							$('.error').text('Failed to upload file').css("color", 'red');
@@ -300,10 +306,12 @@
 						{
 							$('.error').text("Something went wrong").css("color", 'red');
 						}
-						else
+						else if(data == 1)
 						{
 							location.reload();
 						}
+						else
+							$('.error').text("Unknown error").css("color", 'red');
 					}
 				});
 		    });
