@@ -155,7 +155,6 @@
 					$(".custom-menu").html(html);
 					$(".custom-menu").attr('folder_id', folder_id);
 					$(".custom-menu").attr('name_text', name_text);
-
 					$(".custom-menu").attr('file_address', "folder_address_not_allowed");
 				}
 				else if(type == "file")
@@ -194,7 +193,7 @@
 				        case "Rename": rename_File_Folder($(this).parent()); break;
 				        case "Delete": delete_File_Folder($(this).parent()); break;
 				        case "Share": share_File($(this).parent()); break;
-				        case "Details": console.log(type); break;
+				        case "Details": details_File_Folder($(this).parent()); break;
 				    }
 				  
 				    // Hide it AFTER the action was triggered
@@ -433,10 +432,9 @@
 			$('.overlay_backgrnd').fadeIn(400);
 			$('.overlay_div').fadeIn(400);
 
-			var old_name = $(_this_).attr('name_text');
-			// console.log(old_name);
+			var old_name = $(_this_).attr('name_text');			
+			// $('#rename_file_folder_sample #rename_file_folder_text_input').attr("value", old_name);
 
-			$('#rename_file_folder_sample #rename_file_folder_text_input').attr("placeholder", old_name);
 			var html = $('#rename_file_folder_sample').html();
 			$('.overlay_content').html(html);
 
@@ -561,6 +559,51 @@
 			$temp.remove();
 
 			alert("copied");
+		}
+	
+	//function to get details of file/folder
+		function details_File_Folder(_this_)
+		{
+		//displaying the overlay div and its content	
+			$('.overlay_backgrnd').fadeIn(400);
+			$('.overlay_div').fadeIn(400);
+			
+			$('.error').html("");
+			$('.overlay_content').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
+
+			var type = $(_this_).attr("type");				
+			if(type == "file")
+				var id = $(_this_).attr("file_id");
+			else if(type == "folder")
+				var id = $(_this_).attr("folder_id");				
+			
+		//sending rqst to api	
+			// var post_address = api_address + "get_details_of_file_folder.php";
+			// $.post(post_address, {logged_user_id: logged_user_id, type: type, id: id}, function(data)
+			// {
+			// 	console.log(data);
+
+			// 	// if(data == -100)
+			// 	// {
+			// 	// 	$('.error').text("Database connection error");
+			// 	// }
+			// 	// else if(data == -1)
+			// 	// {
+			// 	// 	$('.error').text("Something went wrong");
+			// 	// }
+			// 	// else if(data == 0)
+			// 	// {
+			// 	// 	$('.error').text("Fail to rename");
+			// 	// }
+			// 	// else if(data == 1) //renamed successfully
+			// 	// {						
+			// 	//  	location.reload();
+			// 	// }
+			// 	// else
+			// 	// {
+			// 	// 	$('.error').text("Unknown error");
+			// 	// }
+			// });
 		}
 	</script>
 </body>
