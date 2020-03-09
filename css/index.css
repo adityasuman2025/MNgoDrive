@@ -214,6 +214,38 @@ body
 		font-size: 115%;
 	}
 
+	.details_container
+	{
+		text-align: left;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.details_container div
+	{
+		padding: 0px;
+		margin: 0px;
+	}
+
+	.details_img_cont
+	{
+		text-align: center;
+		vertical-align: middle;
+	}
+
+	.details_container img
+	{
+		padding: 5px;
+		width: 60%;
+	}
+
+	.details_details_cont
+	{
+		color: #f1f1f1;
+		vertical-align: middle;
+		word-wrap: break-word;
+		word-break: break-all;
+	}
 /*-----custom context menu---------*/
 	.custom-menu 
 	{
@@ -321,5 +353,11 @@ body
 			margin-left: 10px;
 			margin-right: 10px;
 			min-height: 100px;
+		}
+
+		.details_container img
+		{
+			width: 100%;
+			padding-right: 5px;
 		}
 	}
