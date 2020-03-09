@@ -619,15 +619,20 @@
 				$('.error').text("");
 				$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
 
-				var type = $(_this_).attr("type");				
+				var file_address = "";
+
+				var type = $(_this_).attr("type");
 				if(type == "file")
+				{
 					var id = $(_this_).attr("file_id");
+					var file_address = $(_this_).attr("file_address");
+				}
 				else if(type == "folder")
-					var id = $(_this_).attr("folder_id");				
+					var id = $(_this_).attr("folder_id");
 				
 			//sending rqst to api	
 				var post_address = api_address + "delete_file_folder.php";
-				$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id}, function(data)
+				$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id, file_address: file_address}, function(data)
 				{
 					// console.log(data);
 
