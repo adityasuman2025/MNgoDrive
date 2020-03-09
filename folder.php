@@ -403,11 +403,11 @@
 		{
 			if(data == -100)
 			{
-				$('.error').text("Database connection error");
+				$('.drive_container').html("Database connection error");
 			}
 			else if(data == -1)
 			{
-				$('.error').text("Something went wrong");
+				$('.drive_container').html("Something went wrong");
 			}
 			else
 			{
@@ -449,6 +449,7 @@
 				}
 
 			//rendering the root folder/file contents and displaying custom context menu
+				$('.drive_container').html("");
 				$('.drive_container').html(html);
 				showCustomContext('file_folder_container');
 

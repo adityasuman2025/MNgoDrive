@@ -3,7 +3,7 @@
 	$session_time = 60*24; //in minutes //1 day
 	$project_title = "MNgo Drive";
 	$today = (date('Y-m-d'));
-	
+
 	$website = $_SERVER['HTTP_HOST']; //dns address of the site 
 	if($website == "localhost")
 	{
@@ -11,7 +11,7 @@
 	}
 	else
 	{
-		$api_address = "http://" . $website . "/MNgo/drive_api/"; //change this address when deplying somewhere else
+		$api_address = "http://mngo.in/drive_api/"; //change this address when deplying somewhere else
 	}
 
 	$isSomeOneLogged = false;
