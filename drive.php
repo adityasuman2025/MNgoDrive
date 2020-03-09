@@ -532,10 +532,12 @@
 			}
 			else if(type == "folder") //displaying the content of the folder
 			{
-				var folder_id = $(_this_).attr("folder_id");		
+				var folder_id = $(_this_).attr("folder_id");
+				var folder_name = $(_this_).find(".name_text").text();
 				$.redirect("folder.php",
 		        {
-		        	folder_id: folder_id
+		        	folder_id: folder_id,
+		        	folder_name: folder_name
 		        }, "POST");
 			}
 		}	

@@ -10,15 +10,18 @@
 	{
 		$logged_user_id = $_COOKIE['MNgoDrive_logged_user_id'];
 
-		if(isset($_POST['folder_id']))
+		if(isset($_POST['folder_id']) && isset($_POST['folder_name']))
+		{
 			$folder_id = $_POST['folder_id'];
+			$folder_name = $_POST['folder_name'];
+		}	
 		else
 			die("Something is wrong");
 	}
 ?>
 <html>
 <head>
-	<title><?php echo $project_title; ?></title>
+	<title><?php echo $folder_name . " - " . $project_title; ?></title>
 
 	<link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/index.css" rel="stylesheet"/>
