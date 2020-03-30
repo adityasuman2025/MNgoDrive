@@ -28,17 +28,6 @@
 	<link rel="icon" href="img/logo.png" />
 	<script type="text/javascript" src="js/jquery.js"> </script>
 	<script type="text/javascript" src="js/jquery.redirect.js"></script>
-	
-	<meta name="viewport" content="width=device-width, initial-scale= 1">
-	<meta charset="utf-8">
-	<meta name="description" content="MNgo | Works in Software Development, Android App Development, Web Development, Graphics Designing | Founder: Aditya Suman">
-	<meta name="google-site-verification" content="tmpTIfxUJCSXkF8NKNgLWkRBtFpKisiSJOipCBQT8DA" />
-	<meta name="keywords" content="Aditya Suman, IIT, IIT Patna, app, android, android studio, app development, web development, website web application, graphics, programming, coding, coder, programmer, software, developer, software developer, development, enginner, software engineering, software">
-	<meta name="robots" content="index, follow">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="language" content="English">
-	<meta name="revisit-after" content="1">
-	<meta name="author" content="Aditya Suman">
 </head>
 
 <body>
