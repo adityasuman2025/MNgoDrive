@@ -103,10 +103,14 @@
 					{
 						$('.error').text("Invalid login credentials");
 					}					
+					else if(data == 1)
+					{
+						// setCookie('MNgoDrive_logged_user_id', data, session_length);
+						location.href = "drive.php";
+					}
 					else
 					{
-						setCookie('MNgoDrive_logged_user_id', data, session_length);
-						location.href = "drive.php";
+						$('.error').text("Unkown error");
 					}
 				});	
 			}
