@@ -600,8 +600,12 @@
 		function share_File(element)
 		{
 			var web_address   = window.location.origin;   // Returns base URL (https://example.com)
-			if(web_address == "http://localhost") //for local server
+			if(web_address == "http://localhost") {
+			//for local server
 				web_address = "http://localhost/MNgoDrive";
+			} else if( web_address == "http://mngo.in" || "https://mngo.in" ) {
+				web_address += "/drive";
+			}
 			
 			var file_address = $(element).attr("file_address");
 			var full_address = web_address + "/" + file_address;
