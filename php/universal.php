@@ -11,7 +11,7 @@
 	}
 	else
 	{
-		$api_address = "http://mngo.in/drive_api/"; //change this address when deplying somewhere else
+		$api_address = "https://mngo.in/drive_api/"; //change this address when deplying somewhere else
 	}
 
 	$isSomeOneLogged = false;
