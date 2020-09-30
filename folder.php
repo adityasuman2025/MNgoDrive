@@ -430,7 +430,7 @@
 
 						var name_extension = name.split('.').pop().toLowerCase();
 						var only_name = name.split('.').slice(0, -1).join('.')
-						only_name = only_name.substring(0, 13);
+						only_name = only_name.substring(0, 20);
 
 						var display_name = only_name + "." + name_extension;
 
@@ -463,7 +463,7 @@
 
 				$.redirect(file_address,
 		        {
-		        }, "POST", "_blank");
+		        }, "GET", "_blank");
 			}
 			else if(type == "folder") //displaying the content of the folder
 			{

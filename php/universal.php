@@ -5,12 +5,9 @@
 	$today = (date('Y-m-d'));
 
 	$website = $_SERVER['HTTP_HOST']; //dns address of the site 
-	if($website == "localhost")
-	{
+	if ($website == "localhost") {
 		$api_address = "http://localhost/MNgo/drive_api/";		
-	}
-	else
-	{
+	} else {
 		$api_address = "https://mngo.in/drive_api/"; //change this address when deplying somewhere else
 	}
 
