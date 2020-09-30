@@ -681,11 +681,15 @@
 							var file_address = resultArray[index]['file_address'];
 
 							var web_address   = window.location.origin;   // Returns base URL (https://example.com)
-							if(web_address == "http://localhost") //for local server
+							if(web_address == "http://localhost") {
+							//for local server
 								web_address = "http://localhost/MNgoDrive";
-							
-							var full_address = web_address + "/" + file_address;
+							} else if( web_address == "http://mngo.in" || "https://mngo.in" ) {
+								web_address += "/drive";
+							}
 
+							var full_address = web_address + "/" + file_address;
+							
 							tempHTML += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 x_m-p details_container"><div class="row"><div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 x_m-p details_img_cont"><img src="img/' + icon_name + '.png" /></div><div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 x_m-p details_details_cont"> <b> Name: </b> ' + name + '<br /> <b> Added on: </b> ' + dateFormat(added_on, "dd mmmm yy - h:MM TT") + '<br /> <b> File Address: </b> <a target="_blank" href="' + full_address + '">' + full_address + '</a></div></div></div>';
 						}
 
