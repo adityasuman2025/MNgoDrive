@@ -11,7 +11,7 @@
 	}
 
 	$SESSION_TIME = 60*24; //in minutes //1 day
-	$AUTH_API_ADDRESS = "https://mngo.in/auth_api/";
+	$AUTH_API_ADDRESS = "http://localhost/MNgo/auth_api/";
 
 	$isSomeOneLogged = false;
 	if(isset($_COOKIE['MNgoDrive_logged_user_token'])) {

@@ -1,13 +1,13 @@
 <?php
 	include_once("php/universal.php");
 
-	// if(!$isSomeOneLogged) //redirecting to the login page
-	// {
-	// 	header("location: index.php");
-	// 	die();
-	// }
+	if(!$isSomeOneLogged) //redirecting to the login page
+	{
+		header("location: index.php");
+		die();
+	}
 
-	$logged_user_id = $_COOKIE['MNgoDrive_logged_user_id'];
+	$logged_user_token = $_COOKIE['MNgoDrive_logged_user_token'];
 ?>
 <html>
 <head>
@@ -16,8 +16,10 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/index.css" rel="stylesheet"/>
 	<link rel="icon" href="img/logo.png" />
+	
 	<script type="text/javascript" src="js/jquery.js"> </script>
 	<script type="text/javascript" src="js/jquery.redirect.js"></script>
+	<script type="text/javascript" src="js/cookie.js" ></script>
 </head>
 
 <body>
@@ -118,10 +120,9 @@
 
 <!-------script-------->
 	<script type="text/javascript">
-		session_length = "<?php echo $session_time; ?>";
-		API_ADDRESS = "<?php echo $API_ADDRESS; ?>";		
-
-		logged_user_id = "<?php echo $logged_user_id; ?>";
+		const SESSION_TIME = "<?php echo $SESSION_TIME; ?>";
+		const API_ADDRESS = "<?php echo $API_ADDRESS; ?>";		
+		const logged_user_token = "<?php echo $logged_user_token; ?>";
 		folder_id = "0";
 
 	//date and tym formatter
@@ -315,6 +316,71 @@
 			});
 		}
 
+	//getting root folder and file of that user
+		var post_address = API_ADDRESS + "get_user_root_file_folder.php";
+		console.log("post_address", post_address);
+		$.post(post_address, {logged_user_token: logged_user_token}, function(data)
+		{
+			if(data == -100)
+			{
+				$('.drive_container').html("Database connection error");
+			}
+			else if(data == -1)
+			{
+				$('.drive_container').html("Something went wrong");
+			}
+			else
+			{
+				var html = "";
+
+				var resultArray = $.parseJSON(data);				
+				for(var index in resultArray) 
+				{
+					var tempHTML = "";
+
+					var name = (resultArray[index]['name']);
+					var type = resultArray[index]['type'];
+
+					if(type == "folder")
+					{
+						name = name.substring(0, 18);
+
+						var icon_name = "folder";
+						var folder_id = resultArray[index]['folder_id'];
+
+						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" folder_id="' + folder_id + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + name + '</div></div>';
+					}
+					else if(type == "file")
+					{
+						var icon_name = "file";
+						var file_address = resultArray[index]['file_address'];
+						var file_id = resultArray[index]['file_id'];
+
+						var name_extension = name.split('.').pop().toLowerCase();
+						var only_name = name.split('.').slice(0, -1).join('.')
+						only_name = only_name.substring(0, 20);
+
+						var display_name = only_name + "." + name_extension;
+
+						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" file_id="' + file_id + '" file_address="' + file_address + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + display_name + '</div></div>';
+					}
+
+					html += tempHTML;
+				}
+
+			//rendering the root folder/file contents and displaying custom context menu
+				$('.drive_container').html("");
+				$('.drive_container').html(html);
+				showCustomContext('file_folder_container');
+
+			//on clicking on any file/folder
+				$('.file_folder_container').on("click", function()
+				{
+					open_File_Folder($(this));
+				});
+			}
+		});
+	
 	//on clicking on logout btn
 		$('#logout_btn').on('click', function()
 		{
@@ -443,70 +509,7 @@
 		    });
 		});
 
-	//getting root folder and file of that user
-		var post_address = API_ADDRESS + "get_user_root_file_folder.php";
-		$.post(post_address, {logged_user_id: logged_user_id}, function(data)
-		{
-			if(data == -100)
-			{
-				$('.drive_container').html("Database connection error");
-			}
-			else if(data == -1)
-			{
-				$('.drive_container').html("Something went wrong");
-			}
-			else
-			{
-				var html = "";
-
-				var resultArray = $.parseJSON(data);				
-				for(var index in resultArray) 
-				{
-					var tempHTML = "";
-
-					var name = (resultArray[index]['name']);
-					var type = resultArray[index]['type'];
-
-					if(type == "folder")
-					{
-						name = name.substring(0, 18);
-
-						var icon_name = "folder";
-						var folder_id = resultArray[index]['folder_id'];
-
-						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" folder_id="' + folder_id + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + name + '</div></div>';
-					}
-					else if(type == "file")
-					{
-						var icon_name = "file";
-						var file_address = resultArray[index]['file_address'];
-						var file_id = resultArray[index]['file_id'];
-
-						var name_extension = name.split('.').pop().toLowerCase();
-						var only_name = name.split('.').slice(0, -1).join('.')
-						only_name = only_name.substring(0, 20);
-
-						var display_name = only_name + "." + name_extension;
-
-						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" file_id="' + file_id + '" file_address="' + file_address + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + display_name + '</div></div>';
-					}
-
-					html += tempHTML;
-				}
-
-			//rendering the root folder/file contents and displaying custom context menu
-				$('.drive_container').html("");
-				$('.drive_container').html(html);
-				showCustomContext('file_folder_container');
-
-			//on clicking on any file/folder
-				$('.file_folder_container').on("click", function()
-				{
-					open_File_Folder($(this));
-				});
-			}
-		});
-
+	
 	//function to open file/folder
 		function open_File_Folder(_this_)
 		{
