@@ -16,10 +16,9 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/index.css" rel="stylesheet"/>
 	<link rel="icon" href="img/logo.png" />
-	
 	<script type="text/javascript" src="js/jquery.js"> </script>
 	<script type="text/javascript" src="js/jquery.redirect.js"></script>
-	<script type="text/javascript" src="js/cookie.js" ></script>
+	<script type="text/javascript" src="js/dateFormat.js"></script>
 </head>
 
 <body>
@@ -120,124 +119,9 @@
 
 <!-------script-------->
 	<script type="text/javascript">
-		const SESSION_TIME = "<?php echo $SESSION_TIME; ?>";
 		const API_ADDRESS = "<?php echo $API_ADDRESS; ?>";		
 		const logged_user_token = "<?php echo $logged_user_token; ?>";
 		folder_id = "0";
-
-	//date and tym formatter
-		var dateFormat = function () 
-	    {
-		    var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
-		        timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
-		        timezoneClip = /[^-+\dA-Z]/g,
-		        pad = function (val, len) {
-		            val = String(val);
-		            len = len || 2;
-		            while (val.length < len) val = "0" + val;
-		            return val;
-		        };
-
-		    // Regexes and supporting functions are cached through closure
-		    return function (date, mask, utc) {
-		        var dF = dateFormat;
-
-		        // You can't provide utc if you skip other args (use the "UTC:" mask prefix)
-		        if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
-		            mask = date;
-		            date = undefined;
-		        }
-
-		        // Passing date through Date applies Date.parse, if necessary
-		        date = date ? new Date(date) : new Date;
-		        if (isNaN(date)) throw SyntaxError("invalid date");
-
-		        mask = String(dF.masks[mask] || mask || dF.masks["default"]);
-
-		        // Allow setting the utc argument via the mask
-		        if (mask.slice(0, 4) == "UTC:") {
-		            mask = mask.slice(4);
-		            utc = true;
-		        }
-
-		        var _ = utc ? "getUTC" : "get",
-		            d = date[_ + "Date"](),
-		            D = date[_ + "Day"](),
-		            m = date[_ + "Month"](),
-		            y = date[_ + "FullYear"](),
-		            H = date[_ + "Hours"](),
-		            M = date[_ + "Minutes"](),
-		            s = date[_ + "Seconds"](),
-		            L = date[_ + "Milliseconds"](),
-		            o = utc ? 0 : date.getTimezoneOffset(),
-		            flags = {
-		                d:    d,
-		                dd:   pad(d),
-		                ddd:  dF.i18n.dayNames[D],
-		                dddd: dF.i18n.dayNames[D + 7],
-		                m:    m + 1,
-		                mm:   pad(m + 1),
-		                mmm:  dF.i18n.monthNames[m],
-		                mmmm: dF.i18n.monthNames[m + 12],
-		                yy:   String(y).slice(2),
-		                yyyy: y,
-		                h:    H % 12 || 12,
-		                hh:   pad(H % 12 || 12),
-		                H:    H,
-		                HH:   pad(H),
-		                M:    M,
-		                MM:   pad(M),
-		                s:    s,
-		                ss:   pad(s),
-		                l:    pad(L, 3),
-		                L:    pad(L > 99 ? Math.round(L / 10) : L),
-		                t:    H < 12 ? "a"  : "p",
-		                tt:   H < 12 ? "am" : "pm",
-		                T:    H < 12 ? "A"  : "P",
-		                TT:   H < 12 ? "AM" : "PM",
-		                Z:    utc ? "UTC" : (String(date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
-		                o:    (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-		                S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
-		            };
-
-		        return mask.replace(token, function ($0) {
-		            return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
-		        });
-		    };
-		}();
-
-			// Some common format strings
-				dateFormat.masks = {
-				    "default":      "ddd mmm dd yyyy HH:MM:ss",
-				    shortDate:      "m/d/yy",
-				    mediumDate:     "mmm d, yyyy",
-				    longDate:       "mmmm d, yyyy",
-				    fullDate:       "dddd, mmmm d, yyyy",
-				    shortTime:      "h:MM TT",
-				    mediumTime:     "h:MM:ss TT",
-				    longTime:       "h:MM:ss TT Z",
-				    isoDate:        "yyyy-mm-dd",
-				    isoTime:        "HH:MM:ss",
-				    isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
-				    isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
-				};
-
-			// Internationalization strings
-				dateFormat.i18n = {
-				    dayNames: [
-				        "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
-				        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-				    ],
-				    monthNames: [
-				        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-				        "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-				    ]
-				};
-
-			// For convenience...
-			Date.prototype.format = function (mask, utc) {
-			    return dateFormat(this, mask, utc);
-		};
 
 	//function to show custom context menu
 		document.addEventListener('contextmenu', event => event.preventDefault()); //removing default context menu
@@ -318,7 +202,6 @@
 
 	//getting root folder and file of that user
 		var post_address = API_ADDRESS + "get_user_root_file_folder.php";
-		console.log("post_address", post_address);
 		$.post(post_address, {logged_user_token: logged_user_token}, function(data)
 		{
 			if(data == -100)
@@ -416,7 +299,7 @@
 				var new_folder_name = $('#create_folder_text_input').val().trim();
 				
 				var post_address = API_ADDRESS + "create_new_folder.php";
-				$.post(post_address, {logged_user_id: logged_user_id, new_folder_name: new_folder_name}, function(data)
+				$.post(post_address, {logged_user_token: logged_user_token, new_folder_name: new_folder_name}, function(data)
 				{				
 					if(data == -100)
 					{
@@ -469,7 +352,7 @@
 		        
 		        var form_data = new FormData();
 				form_data.append("file", property);
-				form_data.append("logged_user_id", logged_user_id);
+				form_data.append("logged_user_token", logged_user_token);
 				form_data.append("folder_id", folder_id);
 				$.ajax(
 				{
@@ -563,10 +446,8 @@
 				
 			//sending rqst to api	
 				var post_address = API_ADDRESS + "rename_file_folder.php";
-				$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id, old_name: old_name, new_name: new_name}, function(data)
+				$.post(post_address, {logged_user_token: logged_user_token, type: type, id: id, old_name: old_name, new_name: new_name}, function(data)
 				{
-					// console.log(data);
-
 					if(data == -100)
 					{
 						$('.error').text("Database connection error");
@@ -627,10 +508,8 @@
 				
 			//sending rqst to api	
 				var post_address = API_ADDRESS + "delete_file_folder.php";
-				$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id, file_address: file_address}, function(data)
+				$.post(post_address, {logged_user_token: logged_user_token, type: type, id: id, file_address: file_address}, function(data)
 				{
-					// console.log(data);
-
 					if(data == -100)
 					{
 						$('.error').text("Database connection error");
@@ -643,7 +522,7 @@
 					{
 						$('.error').text("Fail to rename");
 					}
-					else if(data == 1) //renamed successfully
+					else if(data == 1) //deleted successfully
 					{						
 					 	location.reload();
 					}
@@ -703,10 +582,8 @@
 			
 		//sending rqst to api	
 			var post_address = API_ADDRESS + "get_details_of_file_folder.php";
-			$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id}, function(data)
+			$.post(post_address, {logged_user_token: logged_user_token, type: type, id: id}, function(data)
 			{
-				// console.log(data);
-
 				if(data == -100)
 				{
 					$('.error').text("Database connection error");
@@ -719,7 +596,7 @@
 				{
 					var html = "";
 
-					var resultArray = $.parseJSON(data);				
+					var resultArray = $.parseJSON(data);
 					for(var index in resultArray) 
 					{
 						var tempHTML = "";
@@ -752,7 +629,7 @@
 
 							var full_address = web_address + "/" + file_address;
 
-							tempHTML += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 x_m-p details_container"><div class="row"><div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 x_m-p details_img_cont"><img src="img/' + icon_name + '.png" /></div><div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 x_m-p details_details_cont"> <b> Name: </b> ' + name + '<br /> <b> Added on: </b> ' + dateFormat(added_on, "dd mmmm yy - h:MM TT") + '<br /> <b> File Address: </b> <a target="_blank" href="' + full_address + '">' + full_address + '</a></div></div></div>';
+							tempHTML += '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 x_m-p details_container"><div class="row"><div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 x_m-p details_img_cont"><img src="img/' + icon_name + '.png" /></div><div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 x_m-p details_details_cont"> <b> Name: </b> ' + name + '<br /> <b> Added on: </b> ' + dateFormat(added_on, "dd mmmm yy - h:MM TT") + '<br /> <b> File Address: </b> <a target="_blank" download href="' + full_address + '">' + full_address + '</a></div></div></div>';
 						}
 
 						html += tempHTML;
