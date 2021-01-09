@@ -245,7 +245,7 @@
 
 						var display_name = only_name + "." + name_extension;
 
-						tempHTML += '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" file_id="' + file_id + '" file_address="' + file_address + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + display_name + '</div></div>';
+						tempHTML += '<a href="' + file_address + '" download class="col-lg-2 col-md-2 col-sm-2 col-xs-12 x_m-p file_folder_container" type="' + type + '" file_id="' + file_id + '" file_address="' + file_address + '"><img src="img/' + icon_name + '.png" /><div class="name_text">' + display_name + '</div></a>';
 					}
 
 					html += tempHTML;
@@ -401,9 +401,7 @@
 			{
 				var file_address = $(_this_).attr("file_address");
 
-				$.redirect(file_address,
-		        {
-		        }, "GET", "_blank");
+				$.redirect(file_address,{}, "GET", "_blank");
 			}
 			else if(type == "folder") //displaying the content of the folder
 			{
