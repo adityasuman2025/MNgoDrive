@@ -1,11 +1,11 @@
 <?php
 	include_once("php/universal.php");
 
-	if(!$isSomeOneLogged) //redirecting to the login page
-	{
-		header("location: index.php");
-		die();
-	}
+	// if(!$isSomeOneLogged) //redirecting to the login page
+	// {
+	// 	header("location: index.php");
+	// 	die();
+	// }
 
 	$logged_user_id = $_COOKIE['MNgoDrive_logged_user_id'];
 ?>
@@ -119,7 +119,7 @@
 <!-------script-------->
 	<script type="text/javascript">
 		session_length = "<?php echo $session_time; ?>";
-		api_address = "<?php echo $api_address; ?>";		
+		API_ADDRESS = "<?php echo $API_ADDRESS; ?>";		
 
 		logged_user_id = "<?php echo $logged_user_id; ?>";
 		folder_id = "0";
@@ -349,7 +349,7 @@
 
 				var new_folder_name = $('#create_folder_text_input').val().trim();
 				
-				var post_address = api_address + "create_new_folder.php";
+				var post_address = API_ADDRESS + "create_new_folder.php";
 				$.post(post_address, {logged_user_id: logged_user_id, new_folder_name: new_folder_name}, function(data)
 				{				
 					if(data == -100)
@@ -391,7 +391,7 @@
 			$('.overlay_content').html(html);
 
 		//for uploading file			
-			var post_address = api_address + "upload_file_on_server.php";
+			var post_address = API_ADDRESS + "upload_file_on_server.php";
 		    $(document).on('change', '#file', function()
 		    {
 		      	$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
@@ -444,7 +444,7 @@
 		});
 
 	//getting root folder and file of that user
-		var post_address = api_address + "get_user_root_file_folder.php";
+		var post_address = API_ADDRESS + "get_user_root_file_folder.php";
 		$.post(post_address, {logged_user_id: logged_user_id}, function(data)
 		{
 			if(data == -100)
@@ -559,7 +559,7 @@
 					var id = $(_this_).attr("folder_id");				
 				
 			//sending rqst to api	
-				var post_address = api_address + "rename_file_folder.php";
+				var post_address = API_ADDRESS + "rename_file_folder.php";
 				$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id, old_name: old_name, new_name: new_name}, function(data)
 				{
 					// console.log(data);
@@ -623,7 +623,7 @@
 					var id = $(_this_).attr("folder_id");
 				
 			//sending rqst to api	
-				var post_address = api_address + "delete_file_folder.php";
+				var post_address = API_ADDRESS + "delete_file_folder.php";
 				$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id, file_address: file_address}, function(data)
 				{
 					// console.log(data);
@@ -699,7 +699,7 @@
 				var id = $(_this_).attr("folder_id");				
 			
 		//sending rqst to api	
-			var post_address = api_address + "get_details_of_file_folder.php";
+			var post_address = API_ADDRESS + "get_details_of_file_folder.php";
 			$.post(post_address, {logged_user_id: logged_user_id, type: type, id: id}, function(data)
 			{
 				// console.log(data);

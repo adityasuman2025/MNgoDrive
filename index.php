@@ -1,8 +1,8 @@
 <?php
 	include_once("php/universal.php");
 
-	if($isSomeOneLogged) //redirecting to the drive page
-	{
+	if($isSomeOneLogged) {
+		//redirecting to the drive page
 		header("location: drive.php");
 		die();
 	}
@@ -10,9 +10,11 @@
 <html>
 <head>
 	<title><?php echo $project_title; ?></title>
+
 	<link href="css/index.css" rel="stylesheet"/>
 	<link rel="icon" href="img/logo.png" />
 	<script type="text/javascript" src="js/jquery.js"> </script>
+
 	<meta name="viewport" content="width=device-width, initial-scale= 1">
 </head>
 
@@ -41,49 +43,77 @@
 	
 <!-------script-------->
 	<script type="text/javascript">
-	//on clicking on go btn	    
-		session_length = "<?php echo $session_time; ?>";
-		api_address = "<?php echo $api_address; ?>";		
+		const SESSION_TIME = "<?php echo $SESSION_TIME; ?>";
+		const AUTH_API_ADDRESS = "<?php echo $AUTH_API_ADDRESS; ?>";
+	
+	//function to handle cookies
+		function setCookie(name,value,mins)  {
+			var now = new Date();
+			var time = now.getTime();
+			var expireTime = time + 60000 * mins;
+			now.setTime(expireTime);
+			var tempExp = 'Wed, 31 Oct 2012 08:50:17 GMT';
 
-		$('.button-5').on("click", function(e)
-		{
+			document.cookie =  name + "=" + value + ";expires=" + now.toGMTString() + ";path=/";
+		}
+
+		function getCookie(name) {
+			var nameEQ = name + "=";
+			var ca = document.cookie.split(';');
+			for(var i=0;i < ca.length;i++) {
+				var c = ca[i];
+				while (c.charAt(0)==' ') c = c.substring(1,c.length);
+				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+			}
+			return null;
+		}
+
+		function eraseCookie(name)  {
+			var now = new Date(); 
+			document.cookie = name + '=; expires=' + now.toGMTString() + ";path=/";
+		}
+
+	//on clicking on login btn
+		$('.button-5').on("click", function(e) {
 			e.preventDefault();
 			
 			var login_username = $('#login_username').val().trim();
 			var login_password = $('#login_password').val().trim();
 
-			if(login_username != "" && login_password != "")
-			{
+			if(login_username != "" && login_password != "") {
 				$('.error').text("");
 				$('.error').html("<img class=\"gif_loader\" src=\"img/loader1.gif\">");
 
-				var post_address = api_address + "verify_user.php";
-				$.post(post_address, {login_username: login_username, login_password: login_password}, function(data)
-				{
-					if(data == -100)
-					{
-						$('.error').text("Database connection error");
-					}
-					else if(data == -1)
-					{
+				var post_address = AUTH_API_ADDRESS + "verify_user.php";
+				$.ajax({
+					type: "POST",
+					url: post_address,
+					contentType: "application/json",
+					dataType: "json",
+					data: JSON.stringify({
+						username: login_username,
+						password: login_password
+					}),
+					success: function(response) {
+						if (response.statusCode === 200) {
+							if(response.token) {
+								const token = response.token;
+								setCookie('MNgoDrive_logged_user_token', token, SESSION_TIME);
+								location.href = "drive.php";
+							} else {
+								$('.error').text("Something went wrong");
+							}
+						} else {
+							$('.error').text(response.msg);
+						}
+					},
+					error: function(response) {
 						$('.error').text("Something went wrong");
 					}
-					else if(data == 0)
-					{
-						$('.error').text("Invalid login credentials");
-					}					
-					else if(data == 1)
-					{
-						location.href = "drive.php";
-					}
-					else
-					{
-						$('.error').text("Unkown error");
-					}
-				});	
-			}
-			else
+				});
+			} else {
 				$('.error').text("Please fill all the fields");
+			}
 		});
 	</script>
 </body>
